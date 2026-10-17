@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>역사 지도 탐험 | 중학교 역사</title>
+
+  <!-- 글꼴 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- 기본 지도 라이브러리 (구글 지도 키가 없을 때 사용) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <h1>역사 지도 탐험</h1>
+      <p>지도의 점을 눌러 사건이 일어난 곳과 내용을 확인해 보세요</p>
+    </div>
+    <div class="mode-switch" role="group" aria-label="모드 선택">
+      <button id="modeExplore" class="mode-btn is-active" aria-pressed="true">탐험하기</button>
+      <button id="modeQuiz" class="mode-btn" aria-pressed="false">위치 퀴즈</button>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <!-- 왼쪽: 검색·필터·사건 목록 / 퀴즈 -->
+    <aside class="sidebar">
+
+      <section id="explorePanel">
+        <input id="searchInput" class="search" type="search"
+               placeholder="사건, 지명, 인물 검색 (예: 혁명, 한양)" aria-label="검색">
+
+        <div class="filter-group">
+          <h2>시대</h2>
+          <div id="eraFilters" class="chips"></div>
+        </div>
+
+        <div class="filter-group">
+          <h2>범위</h2>
+          <div id="regionFilter" class="segmented">
+            <button data-region="all" class="is-active">전체</button>
+            <button data-region="world">세계사</button>
+            <button data-region="korea">한국사</button>
+          </div>
+        </div>
+
+        <p id="resultCount" class="count"></p>
+        <ol id="eventList" class="event-list"></ol>
+      </section>
+
+      <section id="quizPanel" hidden>
+        <div class="quiz-card">
+          <p id="quizProgress" class="quiz-progress"></p>
+          <h2 id="quizQuestion" class="quiz-question"></h2>
+          <p id="quizHint" class="quiz-hint"></p>
+          <p id="quizFeedback" class="quiz-feedback" aria-live="polite"></p>
+          <div class="quiz-actions">
+            <button id="quizNext" class="btn" hidden>다음 문제</button>
+            <button id="quizRestart" class="btn btn-ghost">처음부터 다시</button>
+          </div>
+        </div>
+        <p class="quiz-help">
+          ‘탐험하기’에서 고른 시대와 범위 안에서 최대 10문제가 나와요.
+          문제에 나온 사건이 일어난 곳의 점을 지도에서 눌러 보세요.
+        </p>
+      </section>
+
+    </aside>
+
+    <!-- 오른쪽: 지도 -->
+    <div class="map-wrap">
+      <div id="map" aria-label="세계 지도"></div>
+
+      <p id="mapNotice" class="map-notice" role="status" hidden></p>
+
+      <article id="detail" class="detail" hidden aria-live="polite">
+        <button id="detailClose" class="detail-close" aria-label="설명 닫기">×</button>
+        <div class="detail-meta">
+          <span id="detailEra" class="era-tag"></span>
+          <span id="detailRegion" class="region-tag"></span>
+          <span id="detailYear" class="detail-year"></span>
+        </div>
+        <h2 id="detailTitle"></h2>
+        <p id="detailPlace" class="detail-place"></p>
+        <p id="detailText" class="detail-text"></p>
+        <h3>핵심 단어</h3>
+        <ul id="detailKeywords" class="keywords"></ul>
+        <div class="detail-links">
+          <a id="gmapLink" class="map-link" target="_blank" rel="noopener">구글 지도에서 보기</a>
+          <a id="satLink" class="map-link" target="_blank" rel="noopener">위성 사진으로 보기</a>
+        </div>
+        <div class="detail-nav">
+          <button id="prevEvent" class="btn btn-ghost">이전 사건</button>
+          <button id="nextEvent" class="btn btn-ghost">다음 사건</button>
+        </div>
+      </article>
+
+      <div id="legend" class="legend"></div>
+    </div>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
